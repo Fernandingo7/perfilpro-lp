@@ -10,12 +10,20 @@
     html{scroll-behavior:smooth}
     *{box-sizing:border-box}
     body{margin:0;background:#fff;font-family:'Space Grotesk',sans-serif;color:#111;-webkit-font-smoothing:antialiased}
-    a{color:inherit;text-decoration:none}
+    a{color:inherit;text-decoration:none;touch-action:manipulation}
     summary{list-style:none}summary::-webkit-details-marker{display:none}
     details[open] .faq-plus{transform:rotate(45deg)}
     .g{background:linear-gradient(135deg,#FF6219 0%,#E8398F 50%,#9B45F7 100%)}
     .gt{background:linear-gradient(135deg,#FF6219 0%,#E8398F 50%,#9B45F7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+    .btn{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:filter 200ms ease,transform 200ms ease;position:relative;overflow:hidden}
+    .btn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,0.35) 50%,transparent 80%);animation:shine 2.8s ease-in-out infinite;pointer-events:none}
+    @keyframes shine{0%{left:-100%}40%,100%{left:160%}}
+    .btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+    .btn:active{filter:brightness(0.95);transform:translateY(0)}
+    #topbar{z-index:100!important;transition:opacity 200ms}
+    #topbar:hover{opacity:0.9}
+    .mod-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(255,98,25,0.08),rgba(155,69,247,0.14));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.btn{transition:none}}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 </head>
@@ -29,262 +37,497 @@
 </a>
 
 <!-- HERO -->
-<header data-screen-label="Hero" style="background:#fff;border-bottom:1px solid #EBEBEB;">
-  <div style="max-width:800px;margin:0 auto;padding:48px 24px 64px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:28px;">
+<header data-screen-label="Hero" style="background:#fff;border-bottom:1px solid #EBEBEB;overflow:hidden;">
+  <div style="max-width:1060px;margin:0 auto;padding:48px 24px 0;display:flex;align-items:stretch;gap:48px;">
 
-    <!-- LOGO -->
-    <div id="logo" style="display:inline-flex;align-items:center;gap:10px;">
-      <span style="font-size:28px;font-weight:700;letter-spacing:-0.03em;color:#111;">perfil</span>
-      <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;padding:4px 16px 5px;border-radius:999px;" class="g">
-        <span style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;">pro</span>
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="#F5C22A" style="position:absolute;top:-8px;right:-8px;"><path d="M8 0 L9.4 6.6 L16 8 L9.4 9.4 L8 16 L6.6 9.4 L0 8 L6.6 6.6 Z"/></svg>
-      </span>
-    </div>
+    <!-- COLUNA ESQUERDA: texto -->
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:28px;padding-bottom:64px;">
 
-    <!-- HEADLINE -->
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <h1 id="h1" style="margin:0;font-size:clamp(28px,4.5vw,52px);font-weight:700;line-height:1.1;letter-spacing:-0.025em;text-wrap:pretty;">Seu Instagram trabalhando por você para <span class="gt">atrair pacientes particulares</span></h1>
-      <p id="sub" style="margin:0;font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:#555;max-width:600px;margin:0 auto;text-wrap:pretty;">Aprenda a estruturar seu perfil, construir autoridade e produzir conteúdo estratégico, mesmo começando do zero. Um curso curto e direto ao ponto, sem enrolação e sem precisar virar influencer.</p>
-    </div>
-
-    <!-- PRICE BOX -->
-    <div id="price-box" style="width:100%;max-width:460px;border:2px solid #EBEBEB;border-radius:12px;padding:28px 32px;display:flex;flex-direction:column;gap:12px;background:#FAFAFA;">
-      <div style="font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#888;">Oferta exclusiva de Black Friday</div>
-      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:center;">
-        <span style="font-size:16px;color:#aaa;text-decoration:line-through;font-weight:500;">DE R$ 997,00</span>
-        <span style="font-size:14px;font-weight:600;color:#555;">POR</span>
+      <!-- LOGO -->
+      <div id="logo" style="display:inline-flex;align-items:center;gap:10px;">
+        <span style="font-size:28px;font-weight:700;letter-spacing:-0.03em;color:#111;">perfil</span>
+        <span style="position:relative;display:inline-flex;align-items:center;justify-content:center;padding:4px 16px 5px;border-radius:999px;" class="g">
+          <span style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;">pro</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="#F5C22A" style="position:absolute;top:-8px;right:-8px;"><path d="M8 0 L9.4 6.6 L16 8 L9.4 9.4 L8 16 L6.6 9.4 L0 8 L6.6 6.6 Z"/></svg>
+        </span>
       </div>
-      <div style="font-size:clamp(44px,7vw,64px);font-weight:700;letter-spacing:-0.03em;line-height:1;" class="gt">R$ 497,00</div>
-      <div style="font-size:15px;color:#666;">ou <strong>12x de R$ 50,10</strong></div>
+
+      <!-- HEADLINE -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <h1 id="h1" style="margin:0;font-size:clamp(26px,3.5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.025em;text-wrap:pretty;">Quantos pacientes você está perdendo porque <span class="gt">seu Instagram não transmite o valor do seu trabalho?</span></h1>
+        <p id="sub" style="margin:0;font-size:clamp(15px,1.3vw,18px);line-height:1.6;color:#555;text-wrap:pretty;">Aprenda a transformar seu Instagram em uma vitrine capaz de despertar o desejo pelos seus tratamentos e <span class="gt">converter seguidores em pacientes particulares.</span></p>
+      </div>
+
+      <!-- PRICE BOX -->
+      <div id="price-box" style="width:100%;border:2px solid #EBEBEB;border-radius:12px;padding:24px 28px;display:flex;flex-direction:column;gap:10px;background:#FAFAFA;">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#888;">Oferta exclusiva de Black Friday</div>
+        <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+          <span style="font-size:15px;color:#aaa;text-decoration:line-through;font-weight:500;">DE R$ 997,00</span>
+          <span style="font-size:13px;font-weight:600;color:#555;">POR</span>
+        </div>
+        <div style="font-size:clamp(38px,5vw,56px);font-weight:700;letter-spacing:-0.03em;line-height:1;" class="gt">R$ 497,00</div>
+        <div style="font-size:14px;color:#666;">ou <strong>12x de R$ 50,10</strong></div>
+      </div>
+
+      <!-- CTA HERO -->
+      <a id="cta-hero" href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="gap:10px;width:100%;padding:20px 28px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.3;" class="g btn">
+        Quero começar a atrair pacientes com desconto →
+      </a>
+
+      <p style="margin:0;font-size:13px;color:#aaa;display:flex;align-items:center;gap:6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Pagamento 100% seguro · 7 dias de garantia
+      </p>
     </div>
 
-    <!-- CTA HERO -->
-    <a id="cta-hero" href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:560px;padding:20px 28px;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;text-align:center;line-height:1.3;" class="g">
-      Quero começar a atrair pacientes com desconto de Black Friday →
-    </a>
+    <!-- COLUNA DIREITA: foto -->
+    <div style="flex:0 0 380px;min-width:0;display:flex;align-items:flex-end;overflow:hidden;" class="hero-photo-col">
+      <img src="giuliana-sobre.webp" alt="Giuliana Sueyoshi" width="720" height="1082"
+        style="width:100%;height:auto;display:block;object-fit:cover;object-position:top center;border-radius:16px 16px 0 0;max-height:560px;object-fit:cover;">
+    </div>
 
-    <p style="margin:0;font-size:13px;color:#aaa;">🔒 Pagamento 100% seguro · 7 dias de garantia</p>
   </div>
+  <style>
+    @media(max-width:720px){
+      header[data-screen-label="Hero"] > div { flex-direction:column; }
+      .hero-photo-col { flex:none!important; width:100%!important; max-height:300px; border-radius:0; overflow:hidden; }
+      .hero-photo-col img { max-height:300px; border-radius:0; }
+    }
+  </style>
 </header>
 
-<!-- DOR / CICLO -->
-<section data-screen-label="Dor" style="background:#F7F6F4;border-bottom:1px solid #EBEBEB;">
-  <div style="max-width:760px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:flex;flex-direction:column;gap:40px;">
-    <div style="display:flex;flex-direction:column;gap:14px;text-align:center;">
-      <p style="margin:0;font-size:clamp(20px,2.5vw,28px);font-weight:700;line-height:1.3;letter-spacing:-0.015em;">Você não precisa de milhares de seguidores para conseguir pacientes pelas redes sociais.</p>
-      <p style="margin:0;font-size:clamp(17px,1.5vw,21px);line-height:1.5;color:#555;font-weight:500;">Mas precisa parar de produzir conteúdo sem estratégia.</p>
+<!-- DOR / ETAPAS -->
+<section data-screen-label="Dor" style="background:#0D0D0D;">
+  <div style="max-width:600px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:flex;flex-direction:column;gap:32px;align-items:center;text-align:center;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <p style="margin:0;font-size:clamp(22px,3vw,32px);font-weight:700;line-height:1.25;letter-spacing:-0.02em;color:#fff;">Todos os dias, potenciais pacientes podem estar passando pelo seu Instagram sem que você perceba.</p>
+      <p style="margin:0;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#888;">Mas o que acontece quando eles chegam ao seu perfil?</p>
     </div>
 
-    <!-- STEPS -->
-    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;">
-      <div style="flex:1;min-width:200px;max-width:220px;background:#fff;border:1px solid #EBEBEB;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;text-align:center;">
-        <div style="font-size:32px;">📱</div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;">Passo 01</div>
-        <p style="margin:0;font-size:14px;line-height:1.5;color:#555;">Você sabe que deveria estar nas redes, mas não sabe por onde começar</p>
+    <!-- ETAPA 01 -->
+    <div style="width:100%;background:#181818;border:1px solid #333;border-top:3px solid #9B45F7;border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="width:52px;height:52px;border-radius:14px;background:rgba(155,69,247,0.12);border:1px solid rgba(155,69,247,0.3);display:flex;align-items:center;justify-content:center;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9B45F7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
       </div>
-      <div style="font-size:24px;color:#CCC;flex-shrink:0;">→</div>
-      <div style="flex:1;min-width:200px;max-width:220px;background:#fff;border:1px solid #EBEBEB;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;text-align:center;">
-        <div style="font-size:32px;">🤔</div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;">Passo 02</div>
-        <p style="margin:0;font-size:14px;line-height:1.5;color:#555;">Posta uma vez ou outra, sem saber se aquilo pode trazer pacientes</p>
-      </div>
-      <div style="font-size:24px;color:#CCC;flex-shrink:0;">→</div>
-      <div style="flex:1;min-width:200px;max-width:220px;background:#fff;border:1px solid #EBEBEB;border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:12px;text-align:center;">
-        <div style="font-size:32px;">😔</div>
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#aaa;">Passo 03</div>
-        <p style="margin:0;font-size:14px;line-height:1.5;color:#555;">Fica sem resultado e desiste. E na semana seguinte o ciclo recomeça...</p>
-      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#9B45F7;">Etapa 01</div>
+      <p style="margin:0;font-size:18px;font-weight:700;color:#fff;line-height:1.3;">O paciente conhece seu perfil</p>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:#bbb;">Por uma indicação, uma publicação ou uma pesquisa no Instagram.</p>
     </div>
 
-    <p style="margin:0;font-size:clamp(16px,1.4vw,18px);line-height:1.6;color:#555;text-align:center;">Enquanto isso, existem dentistas sendo lembradas, valorizadas e procuradas por novos pacientes todos os dias.</p>
-    <p style="margin:0;font-size:clamp(16px,1.4vw,18px);line-height:1.6;color:#555;text-align:center;">E não é porque elas têm mais seguidores ou são melhores tecnicamente.</p>
+    <div style="color:#9B45F7;font-size:22px;opacity:0.7;">↓</div>
+
+    <!-- ETAPA 02 -->
+    <div style="width:100%;background:#181818;border:1px solid #333;border-top:3px solid #E8398F;border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="width:52px;height:52px;border-radius:14px;background:rgba(232,57,143,0.1);border:1px solid rgba(232,57,143,0.3);display:flex;align-items:center;justify-content:center;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E8398F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#E8398F;">Etapa 02</div>
+      <p style="margin:0;font-size:18px;font-weight:700;color:#fff;line-height:1.3;">Ele avalia seu trabalho</p>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:#bbb;">Procura informações sobre seus tratamentos, seus diferenciais e motivos para confiar em você.</p>
+    </div>
+
+    <div style="color:#FF6219;font-size:22px;opacity:0.7;">↓</div>
+
+    <!-- ETAPA 03 -->
+    <div style="width:100%;background:#1f1010;border:1px solid #3d1a1a;border-top:3px solid #FF6219;border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="width:52px;height:52px;border-radius:14px;background:rgba(255,98,25,0.1);border:1px solid rgba(255,98,25,0.3);display:flex;align-items:center;justify-content:center;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF6219" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#FF6219;">Etapa 03</div>
+      <p style="margin:0;font-size:18px;font-weight:700;color:#fff;line-height:1.3;">E o que acontece? Ele sai sem agendar.</p>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:#bbb;">O motivo quase sempre é o mesmo: o seu perfil não gerou no seguidor o menor desejo de marcar um tratamento.</p>
+    </div>
+
+    <div style="width:100%;height:1px;background:#222;"></div>
+
+    <p style="margin:0;font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#bbb;">E você sequer fica sabendo que perdeu uma oportunidade de conquistar um novo paciente.</p>
+    <p style="margin:0;font-size:clamp(18px,2vw,24px);font-weight:700;line-height:1.3;color:#fff;">Agora, imagine quantas vezes isso pode ter acontecido nos últimos meses.</p>
   </div>
 </section>
 
-<!-- COMPARAÇÃO -->
-<section data-screen-label="Comparação" style="background:#fff;border-bottom:1px solid #EBEBEB;">
-  <div style="max-width:960px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:flex;flex-direction:column;gap:32px;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
-      <!-- GOOD SIDE -->
-      <div style="border:1.5px solid #D1FAE5;border-radius:12px;overflow:hidden;">
-        <div style="background:#ECFDF5;padding:18px 24px;border-bottom:1px solid #D1FAE5;">
-          <p style="margin:0;font-size:14px;font-weight:700;color:#065F46;letter-spacing:0.04em;text-transform:uppercase;">As dentistas que conseguem resultados estão:</p>
+<!-- PODER DO PERFIL PRO -->
+<section data-screen-label="PoderPerfil" style="background:#0D0D0D;border-top:1px solid #1a1a1a;">
+  <div style="max-width:640px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:flex;flex-direction:column;align-items:center;gap:32px;text-align:center;">
+    <!-- badge -->
+    <div style="display:inline-flex;align-items:center;gap:0;border:1.5px solid #333;border-radius:999px;padding:6px 18px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fff;">O PODER DE UM PERFIL <span class="gt">PRO</span>FISSIONAL</span>
+    </div>
+
+    <h2 style="margin:0;font-size:clamp(26px,4vw,40px);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:#fff;">Seus futuros pacientes começam a avaliar seu trabalho antes mesmo de entrarem em contato com você.</h2>
+
+    <p style="margin:0;font-size:clamp(15px,1.4vw,18px);line-height:1.65;color:#888;">Por isso, cada elemento do seu Instagram precisa contribuir para despertar interesse, construir confiança e valorizar seus tratamentos.</p>
+
+    <!-- PHONE COMPARISON -->
+    <div style="display:flex;gap:20px;justify-content:center;align-items:flex-start;width:100%;flex-wrap:wrap;">
+      <!-- Perfil comum -->
+      <div style="flex:1;min-width:140px;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <div style="width:100%;background:#1a1a1a;border:2px solid #2a2a2a;border-radius:24px;padding:12px;display:flex;flex-direction:column;gap:8px;">
+          <!-- top bar -->
+          <div style="width:40%;height:6px;background:#2a2a2a;border-radius:3px;margin:0 auto;"></div>
+          <!-- avatar + stats -->
+          <div style="display:flex;align-items:center;gap:8px;padding:4px 2px;">
+            <div style="width:32px;height:32px;border-radius:50%;background:#2a2a2a;flex-shrink:0;"></div>
+            <div style="display:flex;flex:1;justify-content:space-around;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:12px;height:8px;background:#2a2a2a;border-radius:2px;"></div><div style="width:16px;height:5px;background:#222;border-radius:2px;"></div></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:12px;height:8px;background:#2a2a2a;border-radius:2px;"></div><div style="width:16px;height:5px;background:#222;border-radius:2px;"></div></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:12px;height:8px;background:#2a2a2a;border-radius:2px;"></div><div style="width:16px;height:5px;background:#222;border-radius:2px;"></div></div>
+            </div>
+          </div>
+          <!-- bio lines -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding:0 2px;">
+            <div style="width:70%;height:5px;background:#2a2a2a;border-radius:2px;"></div>
+            <div style="width:90%;height:5px;background:#222;border-radius:2px;"></div>
+            <div style="width:60%;height:5px;background:#222;border-radius:2px;"></div>
+          </div>
+          <!-- follow btn -->
+          <div style="width:100%;height:22px;background:#2a2a2a;border-radius:5px;"></div>
+          <!-- grid -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;">
+            <div style="aspect-ratio:1;background:#222;border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:#1f1f1f;border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:#222;border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:#1f1f1f;border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:#222;border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:#1f1f1f;border-radius:3px;"></div>
+          </div>
         </div>
-        <div style="padding:8px 0;background:#fff;">
-          <div style="display:flex;gap:12px;padding:14px 24px;border-bottom:1px solid #F0FDF4;"><span style="color:#22C55E;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#111;">Com o perfil estruturado para deixar claro o que fazem e para quem</span></div>
-          <div style="display:flex;gap:12px;padding:14px 24px;border-bottom:1px solid #F0FDF4;"><span style="color:#22C55E;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#111;">Atraindo seguidores qualificados, e não só números</span></div>
-          <div style="display:flex;gap:12px;padding:14px 24px;border-bottom:1px solid #F0FDF4;"><span style="color:#22C55E;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#111;">Construindo autoridade e produzindo conteúdo com estratégia, e não por inspiração</span></div>
-          <div style="display:flex;gap:12px;padding:14px 24px;"><span style="color:#22C55E;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#111;">Transformando seguidores em conversas e conversas em pacientes particulares</span></div>
-        </div>
+        <p style="margin:0;font-size:14px;font-weight:700;color:#fff;">Perfil comum</p>
+        <p style="margin:0;font-size:12px;font-weight:600;color:#EF4444;line-height:1.5;">DM e WhatsApp vazios. Ninguém agenda. ❌</p>
       </div>
-      <!-- BAD SIDE -->
-      <div style="border:1.5px solid #FEE2E2;border-radius:12px;overflow:hidden;">
-        <div style="background:#FEF2F2;padding:18px 24px;border-bottom:1px solid #FEE2E2;">
-          <p style="margin:0;font-size:14px;font-weight:700;color:#991B1B;letter-spacing:0.04em;text-transform:uppercase;">Enquanto você está:</p>
+
+      <!-- Perfil estratégico -->
+      <div style="flex:1;min-width:140px;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <div style="width:100%;background:#1a1a1a;border:2px solid #9B45F7;border-radius:24px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 0 24px rgba(155,69,247,0.3);">
+          <!-- top bar -->
+          <div style="width:40%;height:6px;background:#2a2a2a;border-radius:3px;margin:0 auto;"></div>
+          <!-- avatar + stats -->
+          <div style="display:flex;align-items:center;gap:8px;padding:4px 2px;">
+            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#FF6219,#9B45F7);flex-shrink:0;"></div>
+            <div style="display:flex;flex:1;justify-content:space-around;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:12px;height:8px;background:#9B45F7;border-radius:2px;opacity:0.7;"></div><div style="width:16px;height:5px;background:#333;border-radius:2px;"></div></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:12px;height:8px;background:#9B45F7;border-radius:2px;opacity:0.7;"></div><div style="width:16px;height:5px;background:#333;border-radius:2px;"></div></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:12px;height:8px;background:#9B45F7;border-radius:2px;opacity:0.7;"></div><div style="width:16px;height:5px;background:#333;border-radius:2px;"></div></div>
+            </div>
+          </div>
+          <!-- bio lines -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding:0 2px;">
+            <div style="width:70%;height:5px;background:#444;border-radius:2px;"></div>
+            <div style="width:90%;height:5px;background:#333;border-radius:2px;"></div>
+            <div style="width:60%;height:5px;background:#9B45F7;border-radius:2px;opacity:0.5;"></div>
+          </div>
+          <!-- follow btn -->
+          <div style="width:100%;height:22px;background:linear-gradient(135deg,#9B45F7,#E8398F);border-radius:5px;"></div>
+          <!-- highlights -->
+          <div style="display:flex;gap:5px;justify-content:center;">
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid #9B45F7;"></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid #E8398F;"></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid #FF6219;"></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid #9B45F7;"></div>
+          </div>
+          <!-- grid -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;">
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#9B45F7,#333);border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#E8398F,#333);border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#FF6219,#333);border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#333,#9B45F7);border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#333,#E8398F);border-radius:3px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#333,#FF6219);border-radius:3px;"></div>
+          </div>
         </div>
-        <div style="padding:8px 0;background:#fff;">
-          <div style="display:flex;gap:12px;padding:14px 24px;border-bottom:1px solid #FFF1F2;"><span style="color:#EF4444;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#555;">Com um perfil que não explica o seu trabalho</span></div>
-          <div style="display:flex;gap:12px;padding:14px 24px;border-bottom:1px solid #FFF1F2;"><span style="color:#EF4444;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#555;">Sem saber o que postar nem por que postar</span></div>
-          <div style="display:flex;gap:12px;padding:14px 24px;border-bottom:1px solid #FFF1F2;"><span style="color:#EF4444;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#555;">Com vergonha de aparecer e adiando o primeiro vídeo</span></div>
-          <div style="display:flex;gap:12px;padding:14px 24px;border-bottom:1px solid #FFF1F2;"><span style="color:#EF4444;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#555;">Dependendo de convênio e clínica popular para encher a agenda</span></div>
-          <div style="display:flex;gap:12px;padding:14px 24px;"><span style="color:#EF4444;font-size:16px;flex-shrink:0;">→</span><span style="font-size:15px;line-height:1.5;color:#555;">Vendo outras dentistas crescerem enquanto o seu perfil fica parado</span></div>
-        </div>
+        <p style="margin:0;font-size:14px;font-weight:700;color:#fff;">Perfil estratégico</p>
+        <p style="margin:0;font-size:12px;font-weight:600;color:#4ADE80;line-height:1.5;">Pacientes entrando em contato todos os dias 🌺</p>
       </div>
     </div>
+
+    <p style="margin:0;font-size:clamp(18px,2.2vw,24px);font-weight:700;line-height:1.3;color:#fff;">É essa transformação que você vai aprender a construir com o Perfil Pro.</p>
   </div>
 </section>
 
-<!-- TRANSIÇÃO -->
-<section data-screen-label="Transição" style="background:linear-gradient(135deg,rgba(255,98,25,0.06),rgba(232,57,143,0.06),rgba(155,69,247,0.06));border-bottom:1px solid #EBEBEB;">
-  <div style="max-width:680px;margin:0 auto;padding:clamp(64px,9vw,96px) 24px;text-align:center;display:flex;flex-direction:column;gap:16px;">
-    <p style="margin:0;font-size:clamp(22px,3vw,34px);font-weight:700;line-height:1.2;letter-spacing:-0.02em;">Você não precisa descobrir tudo sozinha.</p>
-    <p style="margin:0;font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:#555;">Precisa de um caminho claro, do perfil ao conteúdo, para começar com segurança.</p>
-    <div style="margin-top:8px;">
-      <a href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="display:inline-flex;align-items:center;gap:10px;padding:18px 32px;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;" class="g">Quero meu caminho claro →</a>
+<!-- ESCOLHA -->
+<section data-screen-label="Escolha" style="background:#0D0D0D;border-top:1px solid #1a1a1a;">
+  <div style="max-width:620px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:flex;flex-direction:column;gap:24px;">
+    <p style="margin:0;font-size:clamp(16px,1.5vw,19px);font-weight:600;color:#ccc;text-align:center;">Qual caminho você prefere seguir a partir de hoje?</p>
+
+    <!-- CARD VERMELHO -->
+    <div style="border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+      <div style="background:#E8534A;padding:20px 24px;">
+        <p style="margin:0;font-size:17px;font-weight:700;color:#fff;line-height:1.3;">Enquanto você está:</p>
+      </div>
+      <div style="background:#fff;">
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid #F5F5F5;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#E8534A;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Sem saber o que postar</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid #F5F5F5;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#E8534A;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Dependendo de indicações e convênios para conseguir pacientes</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid #F5F5F5;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#E8534A;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Publicando conteúdos aleatórios sem saber se podem trazer pacientes</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid #F5F5F5;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#E8534A;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Dependendo da criatividade para manter seu perfil ativo</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#E8534A;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Esperando ter milhares de seguidores para começar a levar as redes a sério</span>
+        </div>
+      </div>
     </div>
+
+    <!-- CARD VERDE -->
+    <div style="border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.3);">
+      <div style="background:#22A86B;padding:20px 24px;">
+        <p style="margin:0;font-size:17px;font-weight:700;color:#fff;line-height:1.3;">As dentistas que conseguem resultados estão:</p>
+      </div>
+      <div style="background:#fff;">
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid #F5F5F5;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#22A86B;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Construindo sua própria demanda por pacientes particulares</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid #F5F5F5;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#22A86B;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Atraindo pessoas interessadas nos tratamentos que desejam realizar</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid #F5F5F5;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#22A86B;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Sendo reconhecidas pelos seus diferenciais profissionais</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 24px;">
+          <span style="width:34px;height:34px;border-radius:10px;background:#22A86B;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+          <span style="font-size:15px;line-height:1.55;color:#222;">Construindo uma carreira com mais autonomia e potencial de crescimento financeiro</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin:0;font-size:clamp(20px,2.5vw,28px);font-weight:700;line-height:1.3;color:#fff;text-align:center;">Você já investiu anos aprendendo a ser dentista. Chegou a hora de aprender a atrair os pacientes que valorizam a sua Odontologia.</p>
+
+    <a href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="width:100%;padding:22px;border-radius:12px;font-size:15px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#E8398F,#9B45F7);" class="btn">QUERO TRANSFORMAR MINHA CARREIRA</a>
   </div>
 </section>
 
 <!-- CONTEÚDO DO CURSO -->
+<style>
+  .mod-row{display:flex;align-items:center;gap:48px;padding:clamp(48px,7vw,80px) 0;}
+  .mod-row:not(:last-child){border-bottom:1px solid #EBEBEB;}
+  .mod-row.reverse{flex-direction:row-reverse;}
+  .mod-img{flex:1;min-width:0;border-radius:20px;overflow:hidden;line-height:0;}
+  .mod-img img{width:100%;height:auto;display:block;border-radius:20px;}
+  .mod-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px;}
+  .mod-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;}
+  .mod-badge-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .mod-text h3{margin:0;font-size:clamp(22px,3vw,32px);font-weight:700;line-height:1.15;letter-spacing:-0.02em;}
+  .mod-text p{margin:0;font-size:clamp(15px,1.3vw,17px);line-height:1.65;color:#555;}
+  @media(max-width:680px){
+    .mod-row,.mod-row.reverse{flex-direction:column;gap:28px;}
+  }
+</style>
 <section data-screen-label="Currículo" style="background:#fff;border-bottom:1px solid #EBEBEB;">
-  <div style="max-width:960px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:flex;flex-direction:column;gap:48px;">
-    <div style="text-align:center;display:flex;flex-direction:column;gap:12px;">
+  <div style="max-width:960px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px 0;">
+    <div style="text-align:center;display:flex;flex-direction:column;gap:12px;padding-bottom:clamp(48px,7vw,80px);">
       <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;" class="gt">O que você vai aprender</div>
-      <h2 style="margin:0;font-size:clamp(26px,3.5vw,42px);font-weight:700;line-height:1.1;letter-spacing:-0.02em;">📚 Veja tudo o que você vai aprender no PerfilPro</h2>
+      <h2 style="margin:0;font-size:clamp(26px,3.5vw,42px);font-weight:700;line-height:1.1;letter-spacing:-0.02em;">Veja tudo o que você vai aprender no PerfilPro</h2>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
-      <div style="border:1px solid #EBEBEB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:28px;">🎯</span>
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;">Módulo 01</span>
-        </div>
-        <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.2;">Perfil que se explica sozinho</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Estruture bio, foto, destaques e link para quem chegar no seu perfil entender em segundos o que você faz e como agendar com você.</p>
-      </div>
-      <div style="border:1px solid #EBEBEB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:28px;">📌</span>
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;">Módulo 02</span>
-        </div>
-        <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.2;">Posicionamento e seguidores qualificados</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Defina o que comunicar e pelo que você quer ser lembrada, para atrair as pessoas certas e valorizar os seus tratamentos.</p>
-      </div>
-      <div style="border:1px solid #EBEBEB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:28px;">🏆</span>
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;">Módulo 03</span>
-        </div>
-        <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.2;">Autoridade</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Construa percepção de valor no seu perfil para ser vista como referência e ser escolhida pelos pacientes.</p>
-      </div>
-      <div style="border:1px solid #EBEBEB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:28px;">🧭</span>
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;">Módulo 04</span>
-        </div>
-        <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.2;">Conteúdo estratégico</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Entenda o que postar, em que ordem e com que objetivo, para cada publicação ter um motivo de existir.</p>
-      </div>
-      <div style="border:1px solid #EBEBEB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:28px;">🎬</span>
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;">Módulo 05</span>
-        </div>
-        <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.2;">Produção para Instagram e TikTok</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Aprenda a gravar, editar e publicar do jeito certo para cada rede, mesmo começando do zero e sem equipamento profissional.</p>
-      </div>
-      <div style="border:1px solid #EBEBEB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:28px;">💬</span>
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#aaa;">Módulo 06</span>
-        </div>
-        <h3 style="margin:0;font-size:19px;font-weight:700;line-height:1.2;">Do conteúdo ao agendamento</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Conduza quem te segue para o WhatsApp e transforme interesse em consulta marcada.</p>
+
+    <div class="mod-row">
+      <div class="mod-img"><img src="modulo-01.png" alt="Módulo 01 — Perfil que se explica sozinho" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#9B45F7;"></span><span style="color:#9B45F7;">Módulo 01</span></div>
+        <h3>Perfil que se explica sozinho</h3>
+        <p>Estruture bio, foto, destaques e link para quem chegar no seu perfil entender em segundos o que você faz e como agendar com você.</p>
       </div>
     </div>
+
+    <div class="mod-row reverse">
+      <div class="mod-img"><img src="modulo-02.png" alt="Módulo 02 — Posicionamento e seguidores qualificados" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#E8398F;"></span><span style="color:#E8398F;">Módulo 02</span></div>
+        <h3>Posicionamento e seguidores qualificados</h3>
+        <p>Defina o que comunicar e pelo que você quer ser lembrada, para atrair as pessoas certas e valorizar os seus tratamentos.</p>
+      </div>
+    </div>
+
+    <div class="mod-row">
+      <div class="mod-img"><img src="modulo-03.png" alt="Módulo 03 — Autoridade" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#9B45F7;"></span><span style="color:#9B45F7;">Módulo 03</span></div>
+        <h3>Autoridade</h3>
+        <p>Construa percepção de valor no seu perfil para ser vista como referência e ser escolhida pelos pacientes.</p>
+      </div>
+    </div>
+
+    <div class="mod-row reverse">
+      <div class="mod-img"><img src="modulo-04.png" alt="Módulo 04 — Conteúdo estratégico" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#E8398F;"></span><span style="color:#E8398F;">Módulo 04</span></div>
+        <h3>Conteúdo estratégico</h3>
+        <p>Entenda o que postar, em que ordem e com que objetivo, para cada publicação ter um motivo de existir.</p>
+      </div>
+    </div>
+
+    <div class="mod-row">
+      <div class="mod-img"><img src="modulo-05.png" alt="Módulo 05 — Produção para Instagram e TikTok" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#9B45F7;"></span><span style="color:#9B45F7;">Módulo 05</span></div>
+        <h3>Produção para Instagram e TikTok</h3>
+        <p>Aprenda a gravar, editar e publicar do jeito certo para cada rede, mesmo começando do zero e sem equipamento profissional.</p>
+      </div>
+    </div>
+
+    <div class="mod-row reverse" style="border-bottom:none;">
+      <div class="mod-img"><img src="modulo-06.png" alt="Módulo 06 — Do conteúdo ao agendamento" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#E8398F;"></span><span style="color:#E8398F;">Módulo 06</span></div>
+        <h3>Do conteúdo ao agendamento</h3>
+        <p>Conduza quem te segue para o WhatsApp e transforme interesse em consulta marcada.</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <!-- BÔNUS -->
 <section data-screen-label="Bônus" style="background:#F7F6F4;border-bottom:1px solid #EBEBEB;">
-  <div style="max-width:960px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:flex;flex-direction:column;gap:40px;">
-    <div style="text-align:center;display:flex;flex-direction:column;gap:10px;">
+  <div style="max-width:960px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px 0;">
+    <div style="text-align:center;display:flex;flex-direction:column;gap:10px;padding-bottom:clamp(48px,7vw,80px);">
       <p style="margin:0;font-size:clamp(20px,2.5vw,28px);font-weight:700;line-height:1.2;">Ainda não acabou!</p>
       <p style="margin:0;font-size:17px;color:#666;">Você também receberá:</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
-      <div style="background:#fff;border:2px solid #F5C22A;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:26px;">🎁</span>
-          <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#B45309;background:#FEF9C3;padding:3px 10px;border-radius:4px;">Bônus 1</span>
-        </div>
-        <h3 style="margin:0;font-size:18px;font-weight:700;line-height:1.2;">E-book "101 ideias de conteúdo"</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Ideias prontas para você copiar, gravar e postar no seu perfil. Acabou o "o que eu posto hoje?".</p>
-      </div>
-      <div style="background:#fff;border:2px solid #F5C22A;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:26px;">🎁</span>
-          <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#B45309;background:#FEF9C3;padding:3px 10px;border-radius:4px;">Bônus 2</span>
-        </div>
-        <h3 style="margin:0;font-size:18px;font-weight:700;line-height:1.2;">Aulão "Como dobrar seu faturamento"</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">Estratégias práticas para aumentar seu faturamento sem depender só de mais horas de agenda.</p>
-      </div>
-      <div style="background:#fff;border:2px solid #F5C22A;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:14px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:26px;">🎁</span>
-          <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#B45309;background:#FEF9C3;padding:3px 10px;border-radius:4px;">Bônus 3</span>
-        </div>
-        <h3 style="margin:0;font-size:18px;font-weight:700;line-height:1.2;">Aulão "Como sair da clínica pop e do convênio"</h3>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#666;">O caminho para sair da dependência de clínica popular e convênio e atender pacientes particulares que valorizam o seu trabalho.</p>
+
+    <div class="mod-row">
+      <div class="mod-img"><img src="bonus-1.png" alt="Bônus 1 — E-book 101 ideias de conteúdo" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#F5C22A;"></span><span style="color:#B45309;">Bônus 1 · E-book</span></div>
+        <h3>101 ideias de conteúdo</h3>
+        <p>Ideias prontas para você copiar, gravar e postar no seu perfil. Acabou o "o que eu posto hoje?".</p>
       </div>
     </div>
+
+    <div class="mod-row reverse">
+      <div class="mod-img"><img src="bonus-2.png" alt="Bônus 2 — Como dobrar seu faturamento" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#F5C22A;"></span><span style="color:#B45309;">Bônus 2 · Aulão</span></div>
+        <h3>Como dobrar seu faturamento</h3>
+        <p>Estratégias práticas para aumentar seu faturamento sem depender só de mais horas de agenda.</p>
+      </div>
+    </div>
+
+    <div class="mod-row" style="border-bottom:none;padding-bottom:clamp(64px,9vw,100px);">
+      <div class="mod-img"><img src="bonus-3.png" alt="Bônus 3 — Como sair da clínica pop e do convênio" loading="lazy"></div>
+      <div class="mod-text">
+        <div class="mod-badge"><span class="mod-badge-dot" style="background:#F5C22A;"></span><span style="color:#B45309;">Bônus 3 · Aulão</span></div>
+        <h3>Como sair da clínica pop e do convênio</h3>
+        <p>O caminho para sair da dependência de clínica popular e convênio e atender pacientes particulares que valorizam o seu trabalho.</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <!-- OFERTA / CTA PRINCIPAL -->
-<section id="comecar" data-screen-label="Oferta" style="background:#111;border-bottom:1px solid #222;">
-  <div style="max-width:600px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:28px;">
+<section id="comecar" data-screen-label="Oferta" style="background:#0D0D0D;border-bottom:1px solid #222;">
+  <div style="max-width:520px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;">
 
-    <!-- mini logo branco -->
-    <div style="display:inline-flex;align-items:center;gap:8px;">
-      <span style="font-size:22px;font-weight:700;letter-spacing:-0.03em;color:#fff;">perfil</span>
-      <span style="display:inline-flex;align-items:center;justify-content:center;padding:3px 14px 4px;border-radius:999px;position:relative;" class="g">
-        <span style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.02em;">pro</span>
-        <svg width="11" height="11" viewBox="0 0 16 16" fill="#F5C22A" style="position:absolute;top:-6px;right:-6px;"><path d="M8 0 L9.4 6.6 L16 8 L9.4 9.4 L8 16 L6.6 9.4 L0 8 L6.6 6.6 Z"/></svg>
-      </span>
+    <!-- CARD -->
+    <div style="border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.5);">
+
+      <!-- TOPO GRADIENTE -->
+      <div class="g" style="padding:36px 32px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
+        <!-- logo -->
+        <div style="display:inline-flex;align-items:center;gap:8px;">
+          <span style="font-size:22px;font-weight:700;letter-spacing:-0.03em;color:#fff;">perfil</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;padding:3px 14px 4px;border-radius:999px;background:rgba(255,255,255,0.25);position:relative;">
+            <span style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.02em;">pro</span>
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="#F5C22A" style="position:absolute;top:-6px;right:-6px;"><path d="M8 0 L9.4 6.6 L16 8 L9.4 9.4 L8 16 L6.6 9.4 L0 8 L6.6 6.6 Z"/></svg>
+          </span>
+        </div>
+        <h2 style="margin:0;font-size:clamp(22px,3vw,30px);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:#fff;">Adquira agora o PerfilPro!</h2>
+        <!-- badge oferta -->
+        <div style="display:inline-flex;align-items:center;gap:8px;border:2px solid rgba(255,255,255,0.5);border-radius:999px;padding:10px 24px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#fff" stroke="#fff" stroke-width="1"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#fff;">Oferta por tempo limitado</span>
+        </div>
+      </div>
+
+      <!-- CORPO BRANCO -->
+      <div style="background:#fff;">
+
+        <!-- CHECKLIST -->
+        <div style="padding:8px 0;">
+          <div style="display:flex;align-items:center;gap:14px;padding:18px 28px;border-bottom:1px solid #F0F0F0;">
+            <span style="width:26px;height:26px;border-radius:50%;background:#22C55E;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span style="font-size:16px;font-weight:500;color:#111;">6 módulos completos</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:18px 28px;border-bottom:1px solid #F0F0F0;">
+            <span style="width:26px;height:26px;border-radius:50%;background:#22C55E;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span style="font-size:16px;font-weight:500;color:#111;">3 bônus exclusivos</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:18px 28px;border-bottom:1px solid #F0F0F0;">
+            <span style="width:26px;height:26px;border-radius:50%;background:#22C55E;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span style="font-size:16px;font-weight:500;color:#111;">Acesso imediato e vitalício</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:18px 28px;">
+            <span style="width:26px;height:26px;border-radius:50%;background:#22C55E;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span style="font-size:16px;font-weight:500;color:#111;">7 dias de garantia</span>
+          </div>
+        </div>
+
+        <!-- PREÇO + CTA -->
+        <div style="padding:28px 28px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;border-top:1px solid #F0F0F0;text-align:center;">
+          <span style="font-size:14px;color:#aaa;letter-spacing:0.04em;">DE <span style="text-decoration:line-through;">R$ 997,00</span></span>
+          <span style="font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#555;">POR APENAS</span>
+          <div style="font-size:clamp(52px,10vw,72px);font-weight:700;letter-spacing:-0.03em;line-height:1;" class="gt">R$ 497,00</div>
+          <span style="font-size:14px;color:#888;margin-bottom:12px;">ou <strong style="color:#333;">12x de R$ 50,10</strong></span>
+          <a href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="width:100%;padding:20px;border-radius:12px;font-size:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;text-align:center;" class="g btn">
+            Quero o PerfilPro agora! →
+          </a>
+          <p style="margin:16px 0 0;font-size:13px;color:#aaa;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Pagamento 100% seguro · 7 dias de garantia
+          </p>
+        </div>
+
+      </div>
     </div>
 
-    <h2 style="margin:0;font-size:clamp(24px,3vw,36px);font-weight:700;line-height:1.15;letter-spacing:-0.02em;color:#fff;">Adquira agora o PerfilPro!</h2>
-    <div style="font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#F5C22A;">⚡ OFERTA POR TEMPO LIMITADO: SÓ DURANTE A BLACK FRIDAY</div>
-
-    <!-- checklist -->
-    <div style="width:100%;text-align:left;display:flex;flex-direction:column;gap:10px;background:#1A1A1A;border-radius:10px;padding:20px 24px;">
-      <div style="display:flex;gap:10px;align-items:center;font-size:15px;color:#E5E5E5;"><span style="color:#22C55E;font-weight:700;font-size:17px;">✓</span>Acesso imediato</div>
-      <div style="display:flex;gap:10px;align-items:center;font-size:15px;color:#E5E5E5;"><span style="color:#22C55E;font-weight:700;font-size:17px;">✓</span>Curso curto e direto ao ponto</div>
-      <div style="display:flex;gap:10px;align-items:center;font-size:15px;color:#E5E5E5;"><span style="color:#22C55E;font-weight:700;font-size:17px;">✓</span>3 bônus exclusivos</div>
-      <div style="display:flex;gap:10px;align-items:center;font-size:15px;color:#E5E5E5;"><span style="color:#22C55E;font-weight:700;font-size:17px;">✓</span>7 dias de garantia</div>
-    </div>
-
-    <!-- price -->
-    <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
-      <span style="font-size:16px;color:#888;text-decoration:line-through;">DE R$ 997,00</span>
-      <span style="font-size:14px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.08em;">POR APENAS</span>
-      <span style="font-size:clamp(48px,8vw,72px);font-weight:700;letter-spacing:-0.03em;line-height:1;" class="gt">R$ 497,00</span>
-      <span style="font-size:16px;color:#aaa;">ou <strong style="color:#fff;">12x de R$ 50,10</strong></span>
-    </div>
-
-    <a href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:22px 28px;border-radius:6px;font-size:16px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;text-align:center;" class="g">
-      Quero o PerfilPro agora! →
-    </a>
-    <p style="margin:0;font-size:13px;color:#666;">🔒 Pagamento 100% seguro · 7 dias de garantia</p>
   </div>
 </section>
 
 <!-- SOBRE GIULIANA -->
 <section data-screen-label="Sobre" style="background:#fff;border-bottom:1px solid #EBEBEB;">
   <div style="max-width:900px;margin:0 auto;padding:clamp(64px,9vw,100px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:48px;align-items:center;">
-    <!-- foto placeholder -->
-    <div style="aspect-ratio:1;max-width:360px;width:100%;margin:0 auto;border-radius:16px;background:linear-gradient(135deg,rgba(255,98,25,0.1),rgba(155,69,247,0.1));border:2px dashed #EBEBEB;display:flex;align-items:center;justify-content:center;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:#ccc;">[Foto Giuliana]</div>
+    <!-- foto giuliana -->
+    <div style="max-width:360px;width:100%;margin:0 auto;">
+      <img src="giuliana-sobre.webp" alt="Giuliana Sueyoshi" width="720" height="1082" loading="lazy" style="width:100%;height:auto;border-radius:16px;display:block;">
+    </div>
     <!-- bio -->
     <div style="display:flex;flex-direction:column;gap:20px;">
       <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;" class="gt">Quem criou o PerfilPro</div>
@@ -292,7 +535,7 @@
       <p style="margin:0;font-size:15px;line-height:1.7;color:#555;">Giuliana Sueyoshi é cirurgiã-dentista e criadora do <strong style="color:#111;">@giulianamarketing</strong>, perfil onde ajuda outros dentistas a construírem uma carreira mais rentável e independente, ensinando sobre marketing, redes sociais, posicionamento e gestão do próprio consultório.</p>
       <p style="margin:0;font-size:15px;line-height:1.7;color:#555;">Ela nunca investiu em anúncio no próprio perfil. Passou de <strong style="color:#111;">100 mil seguidores</strong> só com conteúdo intencional, e um único vídeo chegou a trazer <strong style="color:#111;">50 mil seguidores</strong>.</p>
       <p style="margin:0;font-size:15px;line-height:1.7;color:#555;">Também passou pela fase de não saber o que postar, ter vergonha de aparecer e achar que produzir conteúdo tomaria tempo demais. Hoje, além da rotina no consultório, compartilha as estratégias que aplica na própria carreira para ajudar outras dentistas a saírem do zero.</p>
-      <a href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="display:inline-flex;align-items:center;gap:10px;padding:18px 28px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;align-self:flex-start;" class="g">Quero o PerfilPro agora! ↗</a>
+      <a href="https://pay.hub.la/5xHbgjqAHNUXKI089J4f" style="gap:10px;padding:18px 28px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;align-self:flex-start;" class="g btn">Quero o PerfilPro agora! ↗</a>
     </div>
   </div>
 </section>
